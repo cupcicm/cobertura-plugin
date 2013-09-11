@@ -26,149 +26,149 @@ import org.jfree.util.Log;
 
 public class CoverageChart
 {
-	private CategoryDataset	dataset;
-	private int					lowerBound;
-	private int					upperBound;
+    private CategoryDataset	dataset;
+    private int					lowerBound;
+    private int					upperBound;
 
-	/**
-	 * @pre chartable!=null && chartable.getPreviousResult()!=null
-	 */
-	public CoverageChart( Chartable chartable )
-	{
-		this( chartable, isZoomCoverageChart( chartable ), getMaximumBuilds( chartable ) );
-	}
+    /**
+     * @pre chartable!=null && chartable.getPreviousResult()!=null
+     */
+    public CoverageChart( Chartable chartable )
+    {
+        this( chartable, isZoomCoverageChart( chartable ), getMaximumBuilds( chartable ) );
+    }
 
-	/**
-	 * @pre chartable!=null && chartable.getPreviousResult()!=null
-	 */
-	protected CoverageChart( Chartable chartable, boolean zoomCoverageChart, int maximumBuilds )
-	{
-		if( chartable == null ) throw new NullPointerException( "Cannot draw null-chart" );
-		if( chartable.getPreviousResult() == null ) throw new NullPointerException( "Need at least two result to draw a chart" );
-		DataSetBuilder<String, ChartUtil.NumberOnlyBuildLabel> dsb = new DataSetBuilder<String, ChartUtil.NumberOnlyBuildLabel>();
-		int min = 100;
-		int max = 0;
-		int n = 0;
-		for( Chartable a = chartable; a != null; a = a.getPreviousResult())
-		{
-			ChartUtil.NumberOnlyBuildLabel label = new ChartUtil.NumberOnlyBuildLabel( a.getOwner() );
-			for( Map.Entry<CoverageMetric, Ratio> value: a.getResults().entrySet() )
-			{
-				dsb.add( value.getValue().getPercentageFloat(), value.getKey().getName(), label );
-				min = Math.min( min, value.getValue().getPercentage() );
-				max = Math.max( max, value.getValue().getPercentage() );
-			}
-			n++;
-			if( maximumBuilds != 0 && n >= maximumBuilds ) break;
-		}
-		int range = max - min;
-		this.dataset = dsb.build();
-		if( zoomCoverageChart )
-		{
-			this.lowerBound = min - 1;
-			this.upperBound = max + (range < 5 ? 0 : 1);
-		}
-		else
-		{
-			this.lowerBound = -1;
-			this.upperBound = 101;
-		}
-	}
+    /**
+     * @pre chartable!=null && chartable.getPreviousResult()!=null
+     */
+    protected CoverageChart( Chartable chartable, boolean zoomCoverageChart, int maximumBuilds )
+    {
+        if( chartable == null ) throw new NullPointerException( "Cannot draw null-chart" );
+        if( chartable.getPreviousResult() == null ) throw new NullPointerException( "Need at least two result to draw a chart" );
+        DataSetBuilder<String, ChartUtil.NumberOnlyBuildLabel> dsb = new DataSetBuilder<String, ChartUtil.NumberOnlyBuildLabel>();
+        int min = 100;
+        int max = 0;
+        int n = 0;
+        for( Chartable a = chartable; a != null; a = a.getPreviousResult())
+        {
+            ChartUtil.NumberOnlyBuildLabel label = new ChartUtil.NumberOnlyBuildLabel( a.getOwner() );
+            for( Map.Entry<CoverageMetric, Ratio> value: a.getResults().entrySet() )
+            {
+                dsb.add( value.getValue().getPercentageFloat(), value.getKey().getName(), label );
+                min = Math.min( min, value.getValue().getPercentage() );
+                max = Math.max( max, value.getValue().getPercentage() );
+            }
+            n++;
+            if( maximumBuilds != 0 && n >= maximumBuilds ) break;
+        }
+        int range = max - min;
+        this.dataset = dsb.build();
+        if( zoomCoverageChart )
+        {
+            this.lowerBound = min - 1;
+            this.upperBound = max + (range < 5 ? 0 : 1);
+        }
+        else
+        {
+            this.lowerBound = -1;
+            this.upperBound = 101;
+        }
+    }
 
-	protected static boolean isZoomCoverageChart( Chartable chartable )
-	{
-		if( chartable == null ) return false;
-		CoberturaPublisher cp = (CoberturaPublisher) chartable.getOwner().getProject().getPublishersList().get( CoberturaPublisher.DESCRIPTOR );
-		boolean zoomCoverageChart = false;
-		if( cp != null )
-		{
-			zoomCoverageChart = cp.getZoomCoverageChart();
-		}
-		else
-		{
-			Log.warn( "Couldn't find CoberturaPublisher to decide if the graph should be zoomed" );
-		}
-		return zoomCoverageChart;
-	}
+    protected static boolean isZoomCoverageChart( Chartable chartable )
+    {
+        if( chartable == null ) return false;
+        CoberturaPublisher cp = (CoberturaPublisher) chartable.getOwner().getProject().getPublishersList().get( CoberturaPublisher.DESCRIPTOR );
+        boolean zoomCoverageChart = false;
+        if( cp != null )
+        {
+            zoomCoverageChart = cp.getZoomCoverageChart();
+        }
+        else
+        {
+            Log.warn( "Couldn't find CoberturaPublisher to decide if the graph should be zoomed" );
+        }
+        return zoomCoverageChart;
+    }
 
-	protected static int getMaximumBuilds( Chartable chartable )
-	{
-		if( chartable == null ) return 0;
-		CoberturaPublisher cp = (CoberturaPublisher) chartable.getOwner().getProject().getPublishersList().get( CoberturaPublisher.DESCRIPTOR );
-		int maximumBuilds = 0;
-		if( cp != null )
-		{
-			maximumBuilds = cp.getMaxNumberOfBuilds();
-		}
-		else
-		{
-			Log.warn( "Couldn't find CoberturaPublisher to decide the maximum number of builds to be graphed" );
-		}
-		return maximumBuilds;
-	}
+    protected static int getMaximumBuilds( Chartable chartable )
+    {
+        if( chartable == null ) return 0;
+        CoberturaPublisher cp = (CoberturaPublisher) chartable.getOwner().getProject().getPublishersList().get( CoberturaPublisher.DESCRIPTOR );
+        int maximumBuilds = 0;
+        if( cp != null )
+        {
+            maximumBuilds = cp.getMaxNumberOfBuilds();
+        }
+        else
+        {
+            Log.warn( "Couldn't find CoberturaPublisher to decide the maximum number of builds to be graphed" );
+        }
+        return maximumBuilds;
+    }
 
-	public JFreeChart createChart()
-	{
+    public JFreeChart createChart()
+    {
 
-		final JFreeChart chart = ChartFactory.createLineChart( null, // chart title
-				null, // unused
-				"%", // range axis label
-				dataset, // data
-				PlotOrientation.VERTICAL, // orientation
-				true, // include legend
-				true, // tooltips
-				false // urls
-				);
+        final JFreeChart chart = ChartFactory.createLineChart( null, // chart title
+                null, // unused
+                "%", // range axis label
+                dataset, // data
+                PlotOrientation.VERTICAL, // orientation
+                true, // include legend
+                true, // tooltips
+                false // urls
+                );
 
-		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
+        // NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 
-		final LegendTitle legend = chart.getLegend();
-		legend.setPosition( RectangleEdge.BOTTOM );
+        final LegendTitle legend = chart.getLegend();
+        legend.setPosition( RectangleEdge.BOTTOM );
 
-		chart.setBackgroundPaint( Color.white );
+        chart.setBackgroundPaint( Color.white );
 
-		final CategoryPlot plot = chart.getCategoryPlot();
+        final CategoryPlot plot = chart.getCategoryPlot();
 
-		// plot.setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5.0, 5.0, 5.0, 5.0));
-		plot.setBackgroundPaint( Color.WHITE );
-		plot.setOutlinePaint( null );
-		plot.setRangeGridlinesVisible( true );
-		plot.setRangeGridlinePaint( Color.black );
+        // plot.setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5.0, 5.0, 5.0, 5.0));
+        plot.setBackgroundPaint( Color.WHITE );
+        plot.setOutlinePaint( null );
+        plot.setRangeGridlinesVisible( true );
+        plot.setRangeGridlinePaint( Color.black );
 
-		CategoryAxis domainAxis = new ShiftedCategoryAxis( null );
-		plot.setDomainAxis( domainAxis );
-		domainAxis.setCategoryLabelPositions( CategoryLabelPositions.UP_90 );
-		domainAxis.setLowerMargin( 0.0 );
-		domainAxis.setUpperMargin( 0.0 );
-		domainAxis.setCategoryMargin( 0.0 );
+        CategoryAxis domainAxis = new ShiftedCategoryAxis( null );
+        plot.setDomainAxis( domainAxis );
+        domainAxis.setCategoryLabelPositions( CategoryLabelPositions.UP_90 );
+        domainAxis.setLowerMargin( 0.0 );
+        domainAxis.setUpperMargin( 0.0 );
+        domainAxis.setCategoryMargin( 0.0 );
 
-		final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
-		rangeAxis.setStandardTickUnits( NumberAxis.createIntegerTickUnits() );
-		rangeAxis.setUpperBound( upperBound );
-		rangeAxis.setLowerBound( lowerBound );
+        final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+        rangeAxis.setStandardTickUnits( NumberAxis.createIntegerTickUnits() );
+        rangeAxis.setUpperBound( upperBound );
+        rangeAxis.setLowerBound( lowerBound );
 
-		final LineAndShapeRenderer renderer = (LineAndShapeRenderer) plot.getRenderer();
-		renderer.setBaseStroke( new BasicStroke( 1.5f ) );
-		ColorPalette.apply( renderer );
+        final LineAndShapeRenderer renderer = (LineAndShapeRenderer) plot.getRenderer();
+        renderer.setBaseStroke( new BasicStroke( 1.5f ) );
+        ColorPalette.apply( renderer );
 
-		// crop extra space around the graph
-		plot.setInsets( new RectangleInsets( 5.0, 0, 0, 5.0 ) );
+        // crop extra space around the graph
+        plot.setInsets( new RectangleInsets( 5.0, 0, 0, 5.0 ) );
 
-		return chart;
-	}
+        return chart;
+    }
 
-	protected CategoryDataset getDataset()
-	{
-		return dataset;
-	}
+    protected CategoryDataset getDataset()
+    {
+        return dataset;
+    }
 
-	protected int getLowerBound()
-	{
-		return lowerBound;
-	}
+    protected int getLowerBound()
+    {
+        return lowerBound;
+    }
 
-	protected int getUpperBound()
-	{
-		return upperBound;
-	}
+    protected int getUpperBound()
+    {
+        return upperBound;
+    }
 }
