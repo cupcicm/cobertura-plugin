@@ -44,7 +44,7 @@ public class CoverageResultTest extends TestCase {
      */
     private CoverageResult loadResults(String fileName) throws Exception {
         InputStream in = getClass().getResourceAsStream(fileName);
-        CoverageResult result = CoberturaCoverageParser.parse(in, null);
+        CoverageResult result = new CoberturaCoverageParser().parse(in, null);
         return result;
     }
 

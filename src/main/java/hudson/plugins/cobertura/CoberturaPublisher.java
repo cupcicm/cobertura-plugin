@@ -387,7 +387,7 @@ public class CoberturaPublisher extends Recorder {
         CoverageResult result = null;
         for (File coberturaXmlReport : getCoberturaReports(build)) {
             try {
-                result = CoberturaCoverageParser.parse(coberturaXmlReport, result, sourcePaths);
+                result = new CoberturaCoverageParser().parse(coberturaXmlReport, result, sourcePaths);
             } catch (IOException e) {
                 Util.displayIOException(e, listener);
                 e.printStackTrace(listener.fatalError("Unable to parse " + coberturaXmlReport));

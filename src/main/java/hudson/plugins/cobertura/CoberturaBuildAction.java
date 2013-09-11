@@ -212,7 +212,7 @@ public class CoberturaBuildAction implements HealthReportingAction, StaplerProxy
         CoverageResult r = null;
         for (File reportFile : CoberturaPublisher.getCoberturaReports(owner)) {
             try {
-                r = CoberturaCoverageParser.parse(reportFile, r);
+                r = new CoberturaCoverageParser().parse(reportFile, r);
             } catch (IOException e) {
                 logger.log(Level.WARNING, "Failed to load " + reportFile, e);
             }

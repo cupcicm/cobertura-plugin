@@ -31,13 +31,13 @@ public class CoverageResultBuilder
 	public CoverageResultBuilder data() throws IOException
 	{
 
-		results.add( CoberturaCoverageParser.parse( getClass().getResourceAsStream( "coverage-with-data.xml" ), null ) );
+		results.add( new CoberturaCoverageParser().parse( getClass().getResourceAsStream( "coverage-with-data.xml" ), null ) );
 		return this;
 	}
 
 	public CoverageResultBuilder lotsofdata() throws IOException
 	{
-		results.add( CoberturaCoverageParser.parse( getClass().getResourceAsStream( "coverage-with-lots-of-data.xml" ), null ) );
+		results.add( new CoberturaCoverageParser().parse( getClass().getResourceAsStream( "coverage-with-lots-of-data.xml" ), null ) );
 		return this;
 	}
 

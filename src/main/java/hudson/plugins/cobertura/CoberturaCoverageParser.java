@@ -33,17 +33,11 @@ import java.util.regex.Pattern;
  */
 public class CoberturaCoverageParser {
 
-    /**
-     * Do not instantiate CoberturaCoverageParser.
-     */
-    private CoberturaCoverageParser() {
-    }
-
-    public static CoverageResult parse(File inFile, CoverageResult cumulative) throws IOException {
+    public CoverageResult parse(File inFile, CoverageResult cumulative) throws IOException {
         return parse(inFile, cumulative, null);
     }
 
-    public static CoverageResult parse(File inFile, CoverageResult cumulative, Set<String> sourcePaths) throws IOException {
+    public CoverageResult parse(File inFile, CoverageResult cumulative, Set<String> sourcePaths) throws IOException {
         FileInputStream fileInputStream = null;
         BufferedInputStream bufferedInputStream = null;
         try {
@@ -56,11 +50,11 @@ public class CoberturaCoverageParser {
         }
     }
 
-    public static CoverageResult parse(InputStream in, CoverageResult cumulative) throws IOException {
+    public CoverageResult parse(InputStream in, CoverageResult cumulative) throws IOException {
         return parse(in, cumulative, null);
     }
 
-    public static CoverageResult parse(InputStream in, CoverageResult cumulative, Set<String> sourcePaths) throws IOException {
+    public CoverageResult parse(InputStream in, CoverageResult cumulative, Set<String> sourcePaths) throws IOException {
         if (in == null) throw new NullPointerException();
         SAXParserFactory factory = SAXParserFactory.newInstance();
         factory.setValidating(false);

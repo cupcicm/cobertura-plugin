@@ -30,7 +30,7 @@ public class CoberturaCoverageParserTest extends TestCase {
 
     public void testFailureMode1() throws Exception {
         try {
-            CoberturaCoverageParser.parse((InputStream)null, null);
+            new CoberturaCoverageParser().parse((InputStream)null, null);
         } catch (NullPointerException e) {
             assertTrue("Expected exception thrown", true);
         }
@@ -50,7 +50,7 @@ public class CoberturaCoverageParserTest extends TestCase {
 
     public void testParse() throws Exception {
         Set<String> paths = new HashSet<String>();
-        CoverageResult result = CoberturaCoverageParser.parse(getClass().getResourceAsStream("coverage.xml"), null, paths);
+        CoverageResult result = new CoberturaCoverageParser().parse(getClass().getResourceAsStream("coverage.xml"), null, paths);
         result.setOwner(null);
         print(result, 0);
         assertNotNull(result);
@@ -73,7 +73,7 @@ public class CoberturaCoverageParserTest extends TestCase {
     }
 
     public void testParse2() throws Exception {
-        CoverageResult result = CoberturaCoverageParser.parse(getClass().getResourceAsStream("coverage-with-data.xml"), null);
+        CoverageResult result = new CoberturaCoverageParser().parse(getClass().getResourceAsStream("coverage-with-data.xml"), null);
         result.setOwner(null);
         print(result, 0);
         assertNotNull(result);
@@ -97,7 +97,7 @@ public class CoberturaCoverageParserTest extends TestCase {
     @Bug(16252)
     public void testParse_NotRelativeSourcePath() throws Exception {
         Set<String> paths = new HashSet<String>();
-        CoverageResult result = CoberturaCoverageParser.parse(getClass().getResourceAsStream("coverage_16252.xml"), null, paths);
+        CoverageResult result = new CoberturaCoverageParser().parse(getClass().getResourceAsStream("coverage_16252.xml"), null, paths);
         result.setOwner(null);
         print(result, 0);
         assertNotNull(result);
@@ -140,7 +140,7 @@ public class CoberturaCoverageParserTest extends TestCase {
         for (Map.Entry<String,Integer> e : files.entrySet()) {
             final String fileName = e.getKey();
             InputStream in = getClass().getResourceAsStream(fileName);
-            CoverageResult result = CoberturaCoverageParser.parse(in, null, null);
+            CoverageResult result = new CoberturaCoverageParser().parse(in, null, null);
             result.setOwner(null);
             assertMaxMemoryUsage(fileName + " results", result, e.getValue());
         }

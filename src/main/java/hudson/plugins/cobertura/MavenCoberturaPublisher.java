@@ -173,7 +173,7 @@ public class MavenCoberturaPublisher extends MavenReporter {
 		Set<String> sourcePaths = new HashSet<String>();
 
 		try {
-			result = CoberturaCoverageParser.parse(reportFile, null, sourcePaths);
+			result = new CoberturaCoverageParser().parse(reportFile, null, sourcePaths);
 		} catch (IOException e) {
 			Util.displayIOException(e, listener);
 			e.printStackTrace(listener.fatalError("Unable to parse " + reportFilePath));
@@ -278,7 +278,7 @@ public class MavenCoberturaPublisher extends MavenReporter {
 				CoberturaBuildAction cba = build.getAction(CoberturaBuildAction.class);
 				if (cba == null) {
 					File cvgxml = new File(build.getRootDir(), "coverage.xml");
-					CoverageResult result = CoberturaCoverageParser.parse(cvgxml, null, new HashSet<String>());
+					CoverageResult result = new CoberturaCoverageParser().parse(cvgxml, null, new HashSet<String>());
 					result.setOwner(build);
 
 					CoberturaBuildAction o = CoberturaBuildAction.load(build, result, null, null, false, false, false, false, false);
