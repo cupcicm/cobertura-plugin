@@ -31,12 +31,18 @@ import java.util.regex.Pattern;
  * @author connollys
  * @since 03-Jul-2007 09:03:30
  */
-public class CoberturaCoverageParser {
+public class CoberturaCoverageParser implements CoverageParser {
 
+    /* (non-Javadoc)
+     * @see hudson.plugins.cobertura.CoverageParser#parse(java.io.File, hudson.plugins.cobertura.targets.CoverageResult)
+     */
     public CoverageResult parse(File inFile, CoverageResult cumulative) throws IOException {
         return parse(inFile, cumulative, null);
     }
 
+    /* (non-Javadoc)
+     * @see hudson.plugins.cobertura.CoverageParser#parse(java.io.File, hudson.plugins.cobertura.targets.CoverageResult, java.util.Set)
+     */
     public CoverageResult parse(File inFile, CoverageResult cumulative, Set<String> sourcePaths) throws IOException {
         FileInputStream fileInputStream = null;
         BufferedInputStream bufferedInputStream = null;
@@ -50,10 +56,16 @@ public class CoberturaCoverageParser {
         }
     }
 
+    /* (non-Javadoc)
+     * @see hudson.plugins.cobertura.CoverageParser#parse(java.io.InputStream, hudson.plugins.cobertura.targets.CoverageResult)
+     */
     public CoverageResult parse(InputStream in, CoverageResult cumulative) throws IOException {
         return parse(in, cumulative, null);
     }
 
+    /* (non-Javadoc)
+     * @see hudson.plugins.cobertura.CoverageParser#parse(java.io.InputStream, hudson.plugins.cobertura.targets.CoverageResult, java.util.Set)
+     */
     public CoverageResult parse(InputStream in, CoverageResult cumulative, Set<String> sourcePaths) throws IOException {
         if (in == null) throw new NullPointerException();
         SAXParserFactory factory = SAXParserFactory.newInstance();
